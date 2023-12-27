@@ -13,20 +13,13 @@ namespace SensitiveData.CTF.TokenizerAPI.Middleware
         }
         public async Task InvokeAsync(HttpContext context)
         {
-            Stream originalBody = context.Response.Body;
-            try
+            string encryptedBody = await GetBodyAsync(context);
+            string decryptedBody = DecryptString(encryptedBody);
+            using (var memStream = new MemoryStream(Encoding.UTF8.GetBytes(decryptedBody)))
             {
-                using (var memStream = new MemoryStream())
-                {
-                    context.Response.Body = memStream;
-                    await _next(context);
-                    memStream.Position = 0;
-                    memStream.Position = 0;
-                    await memStream.CopyToAsync(originalBody);
-                }
-            }
-            finally {
-                context.Response.Body = originalBody;
+                context.Request.Body = memStream;
+                memStream.Position = 0;
+                await _next(context);
             }
         }
         private async Task<string> GetBodyAsync(HttpContext context)

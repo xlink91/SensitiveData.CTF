@@ -1,5 +1,6 @@
 
 using SensitiveData.CTF.TokenizerAPI.Infrastructure;
+using SensitiveData.CTF.TokenizerAPI.Middleware;
 using System.Reflection;
 
 namespace SensitiveData.CTF.TokenizerAPI
@@ -26,6 +27,8 @@ namespace SensitiveData.CTF.TokenizerAPI
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+
+            app.UseMiddleware<DecryptBodyMiddleware>();
 
             app.UseHttpsRedirection();
 

@@ -6,7 +6,7 @@ namespace SensitiveData.CTF.BlackBox
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             if(args.Length != 2)
             {
@@ -14,8 +14,10 @@ namespace SensitiveData.CTF.BlackBox
                 Environment.Exit(0);
             }
             string body = EncryptString(CreateRequest(), "75b7391b2cbade4fe8bbb1e292167db5");
+            await Console.Out.WriteLineAsync(body);
             HttpClient client = new HttpClient();
-            client.PostAsync(args[1], new StringContent(body, Encoding.UTF8, "application/json")).GetAwaiter().GetResult();
+            HttpResponseMessage response = await client.PostAsync(args[1], new StringContent(body, Encoding.UTF8, "application/json"));
+            await Console.Out.WriteLineAsync(response.StatusCode + " " + await response.Content.ReadAsStringAsync());
         }
 
         public static string EncryptString(string text, string keyString)
