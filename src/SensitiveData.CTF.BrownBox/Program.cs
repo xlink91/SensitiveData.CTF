@@ -46,6 +46,7 @@ namespace SensitiveData.CTF.BrownBox
         {
             services.Configure<ApiConfiguration>(configuration.GetSection(nameof(ApiConfiguration)));
             return services.AddScoped<ITokenizer, Tokenizer>()
+                           .AddScoped<ITokenRepository, TokenRepository>()
                            .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(TokenizeCardCommand).Assembly));
         }
     }
