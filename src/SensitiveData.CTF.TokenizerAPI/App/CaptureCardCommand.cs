@@ -22,7 +22,7 @@ namespace SensitiveData.CTF.TokenizerAPI.App
 
         public async Task<TokenDomain> Handle(CaptureCardCommand request, CancellationToken cancellationToken)
         {
-            HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_configuration.BrownBoxEncryptUrl, request);
+            HttpResponseMessage response = await _httpClient.PostAsJsonAsync(_configuration.BrownBoxEncryptUrl + "/api/card", request);
             return new TokenDomain(await response.Content.ReadAsStringAsync());
         }
     }

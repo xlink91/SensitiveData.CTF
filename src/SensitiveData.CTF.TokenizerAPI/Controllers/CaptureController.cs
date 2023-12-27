@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SensitiveData.CTF.TokenizerAPI.App;
 using SensitiveData.CTF.TokenizerAPI.Domain;
 using System.ComponentModel.DataAnnotations;
 
@@ -18,9 +19,9 @@ namespace SensitiveData.CTF.TokenizerAPI.Controllers
         }
 
         [HttpPost] 
-        public async Task<IActionResult> Post(CardDomain card)
+        public async Task<IActionResult> Post(CaptureCardCommand command)
         {
-            throw new NotImplementedException();
+            return Ok(await _mediator.Send(command));
         }
     }
 }

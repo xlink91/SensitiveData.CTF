@@ -18,7 +18,7 @@ namespace SensitiveData.CTF.BrownBox
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.Register();
+            builder.Services.Register(builder.Configuration);
 
             var app = builder.Build();
 
@@ -42,8 +42,9 @@ namespace SensitiveData.CTF.BrownBox
 
     public static class RegisterServices
     {
-        public static IServiceCollection Register(this IServiceCollection services)
+        public static IServiceCollection Register(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<ApiConfiguration>(configuration.GetSection(nameof(ApiConfiguration)));
             return services.AddScoped<ITokenizer, Tokenizer>()
                            .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(TokenizeCardCommand).Assembly));
         }

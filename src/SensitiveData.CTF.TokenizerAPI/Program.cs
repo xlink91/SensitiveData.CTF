@@ -17,7 +17,7 @@ namespace SensitiveData.CTF.TokenizerAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.Register();
+            builder.Services.Register(builder.Configuration);
 
             var app = builder.Build();
 
@@ -28,6 +28,7 @@ namespace SensitiveData.CTF.TokenizerAPI
                 app.UseSwaggerUI();
             }
 
+            app.UseMiddleware<AuthenticationMiddleware>();
             app.UseMiddleware<DecryptBodyMiddleware>();
 
             app.UseHttpsRedirection();
@@ -42,8 +43,9 @@ namespace SensitiveData.CTF.TokenizerAPI
     }
     public static class RegisterServices
     {
-        public static IServiceCollection Register(this IServiceCollection services)
+        public static IServiceCollection Register(this IServiceCollection services, IConfiguration configuration)
         {
+            services.Configure<ApiConfiguration>(configuration.GetSection(nameof(ApiConfiguration)));
             return services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()))
                             .AddScoped<IHttpWrapper, HttpWrapper>();
         }

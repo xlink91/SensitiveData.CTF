@@ -1,30 +1,38 @@
-﻿using SensitiveData.CTF.BrownBox.Domain;
+﻿using Microsoft.Extensions.Options;
+using SensitiveData.CTF.BrownBox.Domain;
 using System.Data.SqlClient;
 
 namespace SensitiveData.CTF.BrownBox.Infrastructure
 {
     public class Tokenizer : ITokenizer
     {
+        private ApiConfiguration _config;
+
+        public Tokenizer(IOptions<ApiConfiguration> config)
+        {
+            _config = config.Value;
+        }
+
         public string Tokenize(CardDomain card)
         {
             string token = Guid.NewGuid().ToString();
-            string connectionString = "Data Source=localhost, 1401;Initial Catalog=TokenizerCTF;Persist Security Info=True;User ID=sa;Password=Password01;Encrypt=False"; // Replace with your connection string
-            string query = "INSERT INTO PanToken (Token, Pan) VALUES (@Token, @Pan)";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            string panTokenQuery = "INSERT INTO PanToken (Token, Pan) VALUES (@Token, @Pan)";
+            string ownerQuery = "INSERT INTO OwnerInformation(Name, Token) VALUES (@Name, @Token)";
+            using (SqlConnection connection = new SqlConnection(_config.ConnectionString))
             {
-                SqlCommand command = new SqlCommand(query, connection);
-                // Replace these with actual values you want to insert
-                command.Parameters.AddWithValue("@Token", token);
-                command.Parameters.AddWithValue("@Pan", card.Pan.Value);
-                try
-                {
-                    connection.Open();
-                    int result = command.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+
+                connection.Open();
+                SqlTransaction transaction = connection.BeginTransaction();
+                SqlCommand panTokenCommand = new SqlCommand(panTokenQuery, connection, transaction);
+                panTokenCommand.Parameters.AddWithValue("@Token", token);
+                panTokenCommand.Parameters.AddWithValue("@Pan", card.Pan.Value);
+                _ = panTokenCommand.ExecuteNonQuery();
+
+                SqlCommand ownerCommand = new SqlCommand(ownerQuery, connection, transaction);
+                ownerCommand.Parameters.AddWithValue("@Token", token);
+                ownerCommand.Parameters.AddWithValue("@Name", card.CardOwner.Name);
+                _ = ownerCommand.ExecuteNonQuery();
+                transaction.Commit();
             }
             return token;
         }

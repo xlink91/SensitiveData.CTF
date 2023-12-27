@@ -5,7 +5,6 @@ namespace SensitiveData.CTF.TokenizerAPI.Middleware
 {
     public class DecryptBodyMiddleware
     {
-
         private readonly RequestDelegate _next;
         public DecryptBodyMiddleware(RequestDelegate next)
         {
@@ -13,12 +12,18 @@ namespace SensitiveData.CTF.TokenizerAPI.Middleware
         }
         public async Task InvokeAsync(HttpContext context)
         {
-            string encryptedBody = await GetBodyAsync(context);
-            string decryptedBody = DecryptString(encryptedBody);
-            using (var memStream = new MemoryStream(Encoding.UTF8.GetBytes(decryptedBody)))
+            try
             {
-                context.Request.Body = memStream;
-                memStream.Position = 0;
+                string encryptedBody = await GetBodyAsync(context);
+                string decryptedBody = DecryptString(encryptedBody);
+                using (var memStream = new MemoryStream(Encoding.UTF8.GetBytes(decryptedBody)))
+                {
+                    context.Request.Body = memStream;
+                    memStream.Position = 0;
+                    await _next(context);
+                }
+            }catch 
+            { 
                 await _next(context);
             }
         }
@@ -30,7 +35,9 @@ namespace SensitiveData.CTF.TokenizerAPI.Middleware
                 Encoding.UTF8,
                 detectEncodingFromByteOrderMarks: false,
                 leaveOpen: true);
-            return await reader.ReadToEndAsync();
+            string content = await reader.ReadToEndAsync();
+            reader.BaseStream.Position = 0;
+            return content;
         }
         public static string DecryptString(string cipherText, string keyString = "75b7391b2cbade4fe8bbb1e292167db5")
         {

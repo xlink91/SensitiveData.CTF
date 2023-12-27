@@ -14,9 +14,10 @@ namespace SensitiveData.CTF.BlackBox
                 Environment.Exit(0);
             }
             string body = EncryptString(CreateRequest(), "75b7391b2cbade4fe8bbb1e292167db5");
-            await Console.Out.WriteLineAsync(body);
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.PostAsync(args[1], new StringContent(body, Encoding.UTF8, "application/json"));
+            var request = new StringContent(body, Encoding.UTF8, "application/json");
+            request.Headers.Add("Authentication", "CTF2023");
+            HttpResponseMessage response = await client.PostAsync(args[1], request);
             await Console.Out.WriteLineAsync(response.StatusCode + " " + await response.Content.ReadAsStringAsync());
         }
 
