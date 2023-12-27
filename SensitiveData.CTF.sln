@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{811FA267-FFF7-4B00-BFCF-4DBA002DB1C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensitiveData.CTF.TokenizerAPI", "src\SensitiveData.CTF.TokenizerAPI\SensitiveData.CTF.TokenizerAPI.csproj", "{CBDE16BA-ACB9-42E4-9B14-4D945F12748A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SensitiveData.CTF.BrownBox", "src\SensitiveData.CTF.BrownBox\SensitiveData.CTF.BrownBox.csproj", "{1C9BA5EE-C120-4F1A-80E1-90255F3EC419}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tokenizer", "Tokenizer", "{0E0BA29F-E705-4E4C-8D57-A4FCD620D469}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BrownBox", "BrownBox", "{1A2F8DA0-926A-4BB5-AA74-559938BA9089}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CBDE16BA-ACB9-42E4-9B14-4D945F12748A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBDE16BA-ACB9-42E4-9B14-4D945F12748A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBDE16BA-ACB9-42E4-9B14-4D945F12748A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBDE16BA-ACB9-42E4-9B14-4D945F12748A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C9BA5EE-C120-4F1A-80E1-90255F3EC419}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C9BA5EE-C120-4F1A-80E1-90255F3EC419}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C9BA5EE-C120-4F1A-80E1-90255F3EC419}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C9BA5EE-C120-4F1A-80E1-90255F3EC419}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CBDE16BA-ACB9-42E4-9B14-4D945F12748A} = {0E0BA29F-E705-4E4C-8D57-A4FCD620D469}
+		{1C9BA5EE-C120-4F1A-80E1-90255F3EC419} = {1A2F8DA0-926A-4BB5-AA74-559938BA9089}
+		{0E0BA29F-E705-4E4C-8D57-A4FCD620D469} = {811FA267-FFF7-4B00-BFCF-4DBA002DB1C7}
+		{1A2F8DA0-926A-4BB5-AA74-559938BA9089} = {811FA267-FFF7-4B00-BFCF-4DBA002DB1C7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A0414FA3-44BB-4564-AE43-F03212AB51BF}
+	EndGlobalSection
+EndGlobal
